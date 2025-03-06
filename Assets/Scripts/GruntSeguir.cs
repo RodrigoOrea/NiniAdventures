@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GruntScript : MonoBehaviour          //ENEMIGO SIGUE AL JUGADOR CUANDO ENTRA EN SU ZONA Y DEJA DE HACERLO CUANDO SE ALEJA.
+public class GruntSeguir : MonoBehaviour          //ENEMIGO SIGUE AL JUGADOR CUANDO ENTRA EN SU ZONA Y DEJA DE HACERLO CUANDO SE ALEJA.
 {
     private Animator Animator;
     private Rigidbody2D Rigidbody2D;
