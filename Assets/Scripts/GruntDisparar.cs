@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class GruntDisparar : MonoBehaviour
 {
-
     private int health = 3;
     public GameObject BulletPrefab;
-    private float lastShoot; 
+    private float lastShoot;
 
     public GameObject John;
     // Start is called before the first frame update
@@ -78,7 +77,6 @@ public class GruntDisparar : MonoBehaviour
 
 
     }
-
 
 
 }
