@@ -292,6 +292,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Character 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4449062418190238042, guid: d707429e281af5c4ea7812c0d16acc36, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.38
+      objectReference: {fileID: 0}
+    - target: {fileID: 4449062418190238042, guid: d707429e281af5c4ea7812c0d16acc36, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.96
+      objectReference: {fileID: 0}
+    - target: {fileID: 4503982015939197361, guid: d707429e281af5c4ea7812c0d16acc36, type: 3}
+      propertyPath: orthographic size
+      value: 8.4
+      objectReference: {fileID: 0}
     - target: {fileID: 5753237506209183049, guid: d707429e281af5c4ea7812c0d16acc36, type: 3}
       propertyPath: groundCheck
       value: 
