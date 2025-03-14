@@ -22,14 +22,17 @@ public class Gun : Weapon
 
     public override void Shoot()
     {
-        // Instanciar la bala
-        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        if(currentAmmo > 0){
+        
+            GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
 
-        // Aplicar velocidad a la bala
-        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-        if (rb != null)
-        {
-            rb.velocity = transform.right * bulletSpeed;  // Dispara en la dirección de la pistola
+            // Aplicar velocidad a la bala
+            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.velocity = transform.right * bulletSpeed;  // Dispara en la dirección de la pistola
+            }
+            currentAmmo--;
         }
     }
 }

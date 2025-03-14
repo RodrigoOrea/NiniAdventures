@@ -25,41 +25,45 @@ public class Minigun : Weapon
 
     private IEnumerator ShootCoroutine()
 {
-    // Obtener la posición del ratón en el mundo
-    Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-    mousePosition.z = 0; // Asegurarse de que la posición Z sea 0 (2D)
+    if(currentAmmo > 0) {
+                // Obtener la posición del ratón en el mundo
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            mousePosition.z = 0; // Asegurarse de que la posición Z sea 0 (2D)
 
-    // Calcular la dirección base hacia el ratón
-    Vector2 baseDirection = (mousePosition - firePoint.position).normalized;
+            // Calcular la dirección base hacia el ratón
+            Vector2 baseDirection = (mousePosition - firePoint.position).normalized;
 
-    for (int i = 0; i < numberOfBullets; i++)
-    {
-        // Calcular un ángulo aleatorio dentro del rango de dispersión
-        float randomAngle = Random.Range(-spreadAngle, spreadAngle);
+            for (int i = 0; i < numberOfBullets; i++)
+            {
+                // Calcular un ángulo aleatorio dentro del rango de dispersión
+                float randomAngle = Random.Range(-spreadAngle, spreadAngle);
 
-        // Rotar la dirección base según el ángulo aleatorio
-        Quaternion spreadRotation = Quaternion.Euler(0, 0, randomAngle);
-        Vector2 bulletDirection = spreadRotation * baseDirection;
+                // Rotar la dirección base según el ángulo aleatorio
+                Quaternion spreadRotation = Quaternion.Euler(0, 0, randomAngle);
+                Vector2 bulletDirection = spreadRotation * baseDirection;
 
-        // Calcular la rotación de la bala basada en la dirección
-        float angle = Mathf.Atan2(bulletDirection.y, bulletDirection.x) * Mathf.Rad2Deg;
-        Quaternion bulletRotation = Quaternion.Euler(0, 0, angle);
+                // Calcular la rotación de la bala basada en la dirección
+                float angle = Mathf.Atan2(bulletDirection.y, bulletDirection.x) * Mathf.Rad2Deg;
+                Quaternion bulletRotation = Quaternion.Euler(0, 0, angle);
 
-        // Instanciar la bala
-        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, bulletRotation);
+                // Instanciar la bala
+                GameObject bullet = Instantiate(bulletPrefab, firePoint.position, bulletRotation);
 
-        // Aplicar velocidad a la bala
-        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-        if (rb != null)
-        {
-            rb.velocity = bulletDirection * bulletSpeed;
-        }
+                // Aplicar velocidad a la bala
+                Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+                if (rb != null)
+                {
+                    rb.velocity = bulletDirection * bulletSpeed;
+                }
 
-        // Destruir la bala después de alcanzar el rango máximo
-        Destroy(bullet, range / bulletSpeed);
+                // Destruir la bala después de alcanzar el rango máximo
+                Destroy(bullet, range / bulletSpeed);
 
-        // Esperar un pequeño retraso antes de disparar la siguiente bala
-        yield return new WaitForSeconds(delayBetweenBullets);
+                // Esperar un pequeño retraso antes de disparar la siguiente bala
+                yield return new WaitForSeconds(delayBetweenBullets);
+
+                currentAmmo--;
+            }
     }
 }
 }

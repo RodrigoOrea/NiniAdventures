@@ -6,7 +6,7 @@ using UnityEngine.UI; // Necesario para usar InputField
 
 public class GameManager : MonoBehaviour
 {
-    public ChatGPT chatGPT; // Referencia al script de ChatGPT
+    public GeminiAPI Gemini;
     public TMP_InputField playerInput; // Referencia al InputField
     private bool isWaitingForResponse = false;
 
@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
         isWaitingForResponse = true;
         Debug.Log("Envio prompt una vez");
         string userInput1 = userInput.Replace("\n", "").Trim();
-        chatGPT.SendPrompt(userInput1);
+        Gemini.SendRequest(userInput1);
         playerInput.text = "";
         playerInput.interactable = false; // Desactiva el InputField
     }
