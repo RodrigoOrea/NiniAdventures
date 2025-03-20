@@ -1,11 +1,14 @@
 using UnityEngine;
 using UnityEngine.Networking;
+using TMPro; // Necesario para usar TMP_Text
 using System.Collections;
 
 public class GeminiAPI : MonoBehaviour
 {
+    [SerializeField] private TMP_Text responseText; // Referencia al TMP_Text en la UI
     private string apiKey = "AIzaSyACQdPPLW3Pw1w562V6NEjmjFWAs1MIaWk"; // Reemplaza con tu clave de API
     private string apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+
     public void SendRequest(string prompt)
     {
         StartCoroutine(PostRequest(prompt));
@@ -13,30 +16,26 @@ public class GeminiAPI : MonoBehaviour
 
     IEnumerator PostRequest(string prompt)
     {
-        // Crea el cuerpo de la solicitud en formato JSON
-        string jsonData = $"{{\"contents\":[{{\"parts\":[{{\"text\":\"{prompt}\"}}]}}]}}";
+        string jsonData = $"{{\"contents\":[{{\"parts\":[{{\"text\":\"{"Estas siendo usada para representar a un personaje dentro de un videojuego. Tus respuestas al siguiente( o siguientes mensajes) han de ser como si respondiera una personalidad carismática como la de deadpool. Mensaje del jugador: " + prompt}\"}}]}}]}}";
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
 
-        // Configura la solicitud HTTP
         UnityWebRequest request = new UnityWebRequest(apiUrl + "?key=" + apiKey, "POST");
         request.uploadHandler = new UploadHandlerRaw(bodyRaw);
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
 
-        // Envía la solicitud y espera la respuesta
         yield return request.SendWebRequest();
 
         if (request.result == UnityWebRequest.Result.ConnectionError || request.result == UnityWebRequest.Result.ProtocolError)
         {
             Debug.LogError("Error: " + request.error);
+            responseText.text = "Error en la conexión.";
         }
         else
         {
-            // Procesa la respuesta
-            string responseText = request.downloadHandler.text;
-            string parsedResponse = ParseResponse(responseText);
-            Debug.Log("Respuesta de Gemini: " + parsedResponse);
-            // Aquí puedes parsear la respuesta y usarla en tu juego
+            string responseTextValue = ParseResponse(request.downloadHandler.text);
+            responseText.text = responseTextValue; // Muestra la respuesta en la UI
+            Debug.Log("Respuesta de Gemini: " + responseTextValue);
         }
     }
 
@@ -44,10 +43,8 @@ public class GeminiAPI : MonoBehaviour
     {
         try
         {
-            // Parsea la respuesta JSON
             GeminiResponse response = JsonUtility.FromJson<GeminiResponse>(jsonResponse);
 
-            // Extrae el texto de la respuesta
             if (response.candidates != null && response.candidates.Length > 0)
             {
                 return response.candidates[0].content.parts[0].text;
@@ -60,54 +57,12 @@ public class GeminiAPI : MonoBehaviour
         catch (System.Exception e)
         {
             Debug.LogError("Error al parsear la respuesta: " + e.Message);
-            return "Error al parsear la respuesta.";
+            return "Error al procesar la respuesta.";
         }
     }
 
-    // Clases para parsear la respuesta JSON
-    [System.Serializable]
-    private class GeminiResponse
-    {
-        public Candidate[] candidates;
-        public UsageMetadata usageMetadata;
-        public string modelVersion;
-    }
-
-    [System.Serializable]
-    private class Candidate
-    {
-        public Content content;
-        public string finishReason;
-        public float avgLogprobs;
-    }
-
-    [System.Serializable]
-    private class Content
-    {
-        public Part[] parts;
-        public string role;
-    }
-
-    [System.Serializable]
-    private class Part
-    {
-        public string text;
-    }
-
-    [System.Serializable]
-    private class UsageMetadata
-    {
-        public int promptTokenCount;
-        public int candidatesTokenCount;
-        public int totalTokenCount;
-        public TokenDetails[] promptTokensDetails;
-        public TokenDetails[] candidatesTokensDetails;
-    }
-
-    [System.Serializable]
-    private class TokenDetails
-    {
-        public string modality;
-        public int tokenCount;
-    }
+    [System.Serializable] private class GeminiResponse { public Candidate[] candidates; }
+    [System.Serializable] private class Candidate { public Content content; }
+    [System.Serializable] private class Content { public Part[] parts; }
+    [System.Serializable] private class Part { public string text; }
 }

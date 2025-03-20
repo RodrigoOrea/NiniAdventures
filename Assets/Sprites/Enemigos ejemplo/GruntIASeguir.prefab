@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7295575849968314735}
   - component: {fileID: 4982263406373083094}
   - component: {fileID: 6869603225362591208}
+  - component: {fileID: 599853219729236639}
   m_Layer: 0
   m_Name: GruntIASeguir
   m_TagString: Untagged
@@ -196,3 +197,15 @@ MonoBehaviour:
   speed: 3
   followRange: 5
   player: {fileID: 0}
+--- !u!114 &599853219729236639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5418467560153447825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86eee514b2cb75148be17e85935d17f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

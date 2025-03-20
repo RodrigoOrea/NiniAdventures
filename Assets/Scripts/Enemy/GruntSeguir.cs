@@ -8,7 +8,7 @@ public class GruntSeguir : MonoBehaviour          //ENEMIGO SIGUE AL JUGADOR CUA
     private Rigidbody2D Rigidbody2D;
 
     [SerializeField] private float speed;
-    [SerializeField] private float followRange = 10.0f; // Rango de detección del jugador
+    [SerializeField] private float followRange = 10.0f; // Rango de detecciï¿½n del jugador
     [SerializeField] private Transform player;
     private bool isFacingRight = true;
 
@@ -22,7 +22,7 @@ public class GruntSeguir : MonoBehaviour          //ENEMIGO SIGUE AL JUGADOR CUA
     {
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
 
-        if (distanceToPlayer <= followRange) // Solo sigue si el jugador está dentro del rango
+        if (distanceToPlayer <= followRange) // Solo sigue si el jugador estï¿½ dentro del rango
         {
             transform.position = Vector2.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
 
@@ -33,7 +33,7 @@ public class GruntSeguir : MonoBehaviour          //ENEMIGO SIGUE AL JUGADOR CUA
         }
         else
         {
-            Animator.SetBool("running", false); // Detiene la animación si el jugador está fuera del rango
+            Animator.SetBool("running", false); // Detiene la animaciï¿½n si el jugador estï¿½ fuera del rango
         }
     }
 
@@ -47,6 +47,4 @@ public class GruntSeguir : MonoBehaviour          //ENEMIGO SIGUE AL JUGADOR CUA
             transform.localScale = scale;
         }
     }
-
-
 }
