@@ -18,14 +18,6 @@ public class EnemyHealth : MonoBehaviour
         {
             TakeDamage(10);
         }
-        else if (collision.CompareTag("Bullet_Shotgun"))
-        {
-            TakeDamage(25);
-        }
-        else if (collision.CompareTag("Bullet_Rocket"))
-        {
-            TakeDamage(50);
-        }
     }
 
     private void TakeDamage(int damage)
