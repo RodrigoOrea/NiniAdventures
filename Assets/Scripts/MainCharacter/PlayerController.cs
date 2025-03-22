@@ -55,13 +55,9 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Colision detectada");
         // Verificar si el objeto colisionado tiene la etiqueta "enemyBullet"
         if (collision.gameObject.CompareTag("enemyBullet"))
         {
-            // Reducir la salud del jugador
-            Debug.Log("Vida actual: " + health);
-
             // Aplicar efecto visual de impacto
             FlashWhite(0.1f);
 

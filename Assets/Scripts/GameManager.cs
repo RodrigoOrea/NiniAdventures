@@ -17,12 +17,28 @@ public class GameManager : MonoBehaviour
     public Transform initialRespawnPoint; // Punto de respawn inicial
     private Transform currentRespawnPoint; // Punto de respawn actual
 
-    public TMP_Text textoVida;
+    public TMP_Text textoHEALTH;
 
     private float health = 100;
 
+    public TMP_Text textoAMMO;
+    private int ammo = 50;
+
+    public TMP_Text textoGRANADE;
+
+    private int granades = 10;
+
+    private static int MAX_AMMO = 50;
+
+    private static int MAX_GRANADES = 10;
+
+    private static int MAX_HEALTH = 100;
+
     private void Awake()
     {
+        textoAMMO.text = "AMMO: 50";
+        textoHEALTH.text = "HEALTH: 100";
+        textoGRANADE.text = "GRANADE: 10";
         // Configura el singleton
         if (Instance == null)
         {
@@ -88,7 +104,7 @@ public class GameManager : MonoBehaviour
             player.position = currentRespawnPoint.position;
             Debug.Log("Jugador respawneado en: " + currentRespawnPoint.position);
             health = 100;
-            textoVida.text = "VIDA: " + 100;
+            textoHEALTH.text = "HEALTH: " + 100;
         }
         else
         {
@@ -98,8 +114,34 @@ public class GameManager : MonoBehaviour
     public void RegisterBulletHit(float hit)
     {
         health -= hit; // Incrementar el contador
-        textoVida.text = "VIDA: " + health; // Actualizar el texto en la UI
+        textoHEALTH.text = "HEALTH: " + health; // Actualizar el texto en la UI
         if(health <= 0) RespawnPlayer();
+    }
+
+    public void IncreaseAmmo(int amount)
+    {
+        ammo = Mathf.Min(ammo + amount, MAX_AMMO);  // Aumenta la munición sin superar el máximo
+        granades = Mathf.Min(granades + amount, MAX_GRANADES);
+        textoAMMO.text = "AMMO: " + ammo;
+        textoGRANADE.text = "GRANADES: " + granades;
+    }
+
+    public void DecreaseAmmo(int amount)
+    {
+        ammo -= 1;
+        textoAMMO.text = "AMMO: " + ammo;
+    }
+
+    public void DecreaseGranades(int amount)
+    {
+        granades -= 1;
+        textoGRANADE.text = "GRANADES: " + granades;
+    }
+
+     public void IncreaseHealth(int amount)
+    {
+        health = Mathf.Min(health + amount, MAX_HEALTH);  // Aumenta la munición sin superar el máximo
+        textoHEALTH.text = "HEALTH: " + health;
     }
 
 }

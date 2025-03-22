@@ -33,6 +33,7 @@ public class Gun : Weapon
                 rb.velocity = transform.right * bulletSpeed;  // Dispara en la dirección de la pistola
             }
             currentAmmo--;
+            GameManager.Instance.DecreaseAmmo(1);
         }
     }
 }

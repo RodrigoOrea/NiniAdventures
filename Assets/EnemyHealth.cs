@@ -20,7 +20,7 @@ public class EnemyHealth : MonoBehaviour
         }
     }
 
-    private void TakeDamage(int damage)
+    public void TakeDamage(int damage)
     {
         health -= damage;
         Debug.Log("Enemigo recibió " + damage + " de daño. Vida restante: " + health);

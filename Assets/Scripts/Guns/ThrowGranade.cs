@@ -24,5 +24,6 @@ public class ThrowGrenade : MonoBehaviour
         {
             rb.velocity = new Vector2(throwForceX * transform.localScale.x, throwForceY);
         }
+        GameManager.Instance.DecreaseGranades(1);
     }
 }
