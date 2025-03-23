@@ -22,11 +22,11 @@ public class GameManager : MonoBehaviour
     private float health = 100;
 
     public TMP_Text textoAMMO;
-    private int ammo = 50;
+    public int ammo = 50;
 
     public TMP_Text textoGRANADE;
 
-    private int granades = 10;
+    public int granades = 10;
 
     private static int MAX_AMMO = 50;
 

@@ -9,7 +9,7 @@ public class ThrowGrenade : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F)) // Detecta la tecla "F"
+        if (Input.GetKeyDown(KeyCode.F) && GameManager.Instance.granades > 0) // Detecta la tecla "F"
         {
             Throw();
         }

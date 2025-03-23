@@ -16,7 +16,7 @@ public class GeminiAPI : MonoBehaviour
 
     IEnumerator PostRequest(string prompt)
     {
-        string jsonData = $"{{\"contents\":[{{\"parts\":[{{\"text\":\"{"Estas siendo usada para representar a un personaje dentro de un videojuego. Tus respuestas al siguiente( o siguientes mensajes) han de ser como si respondiera una personalidad carismática como la de deadpool. Mensaje del jugador: " + prompt}\"}}]}}]}}";
+        string jsonData = $"{{\"contents\":[{{\"parts\":[{{\"text\":\"{"Estas siendo usada para representar a un personaje dentro de un videojuego. Tus respuestas al siguiente( o siguientes mensajes) han de ser como si respondiera una personalidad carismática como la de deadpool. Responde en un maximo de 15 palabras. Mensaje del jugador: " + prompt}\"}}]}}]}}";
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
 
         UnityWebRequest request = new UnityWebRequest(apiUrl + "?key=" + apiKey, "POST");
@@ -36,7 +36,16 @@ public class GeminiAPI : MonoBehaviour
             string responseTextValue = ParseResponse(request.downloadHandler.text);
             responseText.text = responseTextValue; // Muestra la respuesta en la UI
             Debug.Log("Respuesta de Gemini: " + responseTextValue);
+
+            // Inicia una corrutina para borrar el texto después de 5 segundos
+            StartCoroutine(ClearTextAfterDelay(5f));
         }
+    }
+
+     private IEnumerator ClearTextAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay); // Espera el tiempo especificado
+        responseText.text = ""; // Borra el texto
     }
 
     private string ParseResponse(string jsonResponse)

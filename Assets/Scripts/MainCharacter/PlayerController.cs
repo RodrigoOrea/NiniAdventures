@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // Verificar si el jugador está en el suelo
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.1f, groundLayer);
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.05f, groundLayer);
         if (isGrounded) animator.SetBool("IsJumping", false);
         else animator.SetBool("IsJumping", true);
 
