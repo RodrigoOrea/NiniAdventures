@@ -11,27 +11,6 @@ public class BulletBehaviour : MonoBehaviour
 
     public float velocidad = 10f;
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        // Verificar si la bala colisiona con el personaje
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            // Obtener el componente del personaje
-            PlayerController player = collision.gameObject.GetComponent<PlayerController>();
-
-            if (player != null)
-            {
-                // Aplicar daño al personaje (si es necesario)
-                player.TakeDamage(damage);
-
-                // Cambiar el color del personaje momentáneamente
-                player.FlashWhite(flashDuration);
-            }
-
-            // Destruir la bala después del impacto
-            Destroy(gameObject);
-        }
-    }
     void OnBecameInvisible()
     {
         Destroy(gameObject);  // Destruye la bala si sale de la pantalla
@@ -51,4 +30,9 @@ public class BulletBehaviour : MonoBehaviour
         // Aplicar velocidad al Rigidbody2D
         rb.velocity = direccion * velocidad;
     }
+
+    public void DestroyBullet()
+{
+    Destroy(gameObject); // Destruye el objeto que tiene este script
+}
 }

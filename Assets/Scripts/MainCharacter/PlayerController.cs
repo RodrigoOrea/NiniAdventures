@@ -7,24 +7,19 @@ public class PlayerController : MonoBehaviour
     private Material flashMaterial; // Material para el efecto de impacto
     private SpriteRenderer spriteRenderer; // Renderer del personaje
 
-
-
-    //logica de animacion
+    // Lógica de animación
     private Animator animator;
     private Rigidbody2D rb;
     private bool isGrounded;
     public Transform groundCheck;
-
     public LayerMask groundLayer;
+
 
     void Start()
     {
-        //lógica de animcion
+        // Lógica de animación
         animator = GetComponent<Animator>();
         rb = GetComponentInParent<Rigidbody2D>();
-
-
-
 
         // Obtener el SpriteRenderer del personaje
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -40,8 +35,8 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // Verificar si el jugador está en el suelo
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.1f, groundLayer);
-        if(isGrounded) animator.SetBool("IsJumping", false);
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.05f, groundLayer);
+        if (isGrounded) animator.SetBool("IsJumping", false);
         else animator.SetBool("IsJumping", true);
 
         // Movimiento horizontal
@@ -49,24 +44,25 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("Speed", Mathf.Abs(moveInput));
 
         if (moveInput > 0)
-            {
-                transform.localScale = new Vector3(1, 1, 1); // Mirar a la derecha
-            }
-            else if (moveInput < 0)
-            {
-                transform.localScale = new Vector3(-1, 1, 1); // Mirar a la izquierda
-            }
+        {
+            transform.localScale = new Vector3(1, 1, 1); // Mirar a la derecha
+        }
+        else if (moveInput < 0)
+        {
+            transform.localScale = new Vector3(-1, 1, 1); // Mirar a la izquierda
+        }
     }
 
-    public void TakeDamage(float damage)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Reducir la salud del personaje
-        health -= damage;
-
-        // Verificar si el personaje ha muerto
-        if (health <= 0)
+        // Verificar si el objeto colisionado tiene la etiqueta "enemyBullet"
+        if (collision.gameObject.CompareTag("enemyBullet"))
         {
-            Die();
+            // Aplicar efecto visual de impacto
+            FlashWhite(0.1f);
+
+            GameManager.Instance.RegisterBulletHit(15.0f);
+
         }
     }
 
@@ -85,10 +81,12 @@ public class PlayerController : MonoBehaviour
         spriteRenderer.material = originalMaterial;
     }
 
-    private void Die()
-    {
+    //private void Die()
+    //{
         // Lógica para cuando el personaje muere
-        Debug.Log("Player has died!");
-        Destroy(gameObject);
-    }
+        //Debug.Log("Player has died!");
+        //Destroy(gameObject);
+    //}
+
+    
 }

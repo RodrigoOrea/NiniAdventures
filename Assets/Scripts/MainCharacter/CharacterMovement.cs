@@ -7,7 +7,6 @@ public class CharacterMovement : MonoBehaviour
     public float dashForce = 10f;
     public float dashDuration = 0.2f;
     public LayerMask groundLayer;
-    private int health = 6;
 
 
     private Rigidbody2D rb;
@@ -94,19 +93,4 @@ public class CharacterMovement : MonoBehaviour
         rb.gravityScale = originalGravityScale; // Restaurar la gravedad original
     }
 
-
-    public void Hit()
-    {
-
-        health = health - 1;
-
-        if (health == 0)
-        {
-
-            Destroy(gameObject);
-
-        }
-
-
-    }
 }

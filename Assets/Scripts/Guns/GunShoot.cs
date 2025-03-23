@@ -22,7 +22,7 @@ public class Gun : Weapon
 
     public override void Shoot()
     {
-        if(currentAmmo > 0){
+        if(GameManager.Instance.ammo > 0){
         
             GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
 
@@ -33,6 +33,7 @@ public class Gun : Weapon
                 rb.velocity = transform.right * bulletSpeed;  // Dispara en la dirección de la pistola
             }
             currentAmmo--;
+            GameManager.Instance.DecreaseAmmo(1);
         }
     }
 }

@@ -2,15 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GruntSeguir : MonoBehaviour          //ENEMIGO SIGUE AL JUGADOR CUANDO ENTRA EN SU ZONA Y DEJA DE HACERLO CUANDO SE ALEJA.
+public class GruntSeguir : MonoBehaviour
 {
     private Animator Animator;
     private Rigidbody2D Rigidbody2D;
 
     [SerializeField] private float speed;
-    [SerializeField] private float followRange = 10.0f; // Rango de detecciÛn del jugador
+    [SerializeField] private float followRange = 10.0f; // Rango de detecci√≥n del jugador
+    [SerializeField] private float shootRange = 6.76f;   // Rango de disparo
     [SerializeField] private Transform player;
+    [SerializeField] private GameObject bulletPrefab;    // Prefab de la bala
+    [SerializeField] private Transform firePoint;        // Punto de disparo
+    [SerializeField] private float bulletSpeed = 10f;    // Velocidad de la bala
+    [SerializeField] private float shootCooldown = 1f;  // Tiempo entre disparos
+
     private bool isFacingRight = true;
+    private float timeSinceLastShot = 0f;
 
     void Start()
     {
@@ -22,7 +29,7 @@ public class GruntSeguir : MonoBehaviour          //ENEMIGO SIGUE AL JUGADOR CUA
     {
         float distanceToPlayer = Vector2.Distance(transform.position, player.position);
 
-        if (distanceToPlayer <= followRange) // Solo sigue si el jugador est· dentro del rango
+        if (distanceToPlayer <= followRange) // Solo sigue si el jugador est√° dentro del rango
         {
             transform.position = Vector2.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
 
@@ -30,11 +37,22 @@ public class GruntSeguir : MonoBehaviour          //ENEMIGO SIGUE AL JUGADOR CUA
             Flip(isPlayerRight);
 
             Animator.SetBool("running", speed != 0.0f);
+
+            if (distanceToPlayer <= shootRange) // Si el jugador est√° dentro del rango de disparo
+            {
+                if (timeSinceLastShot >= shootCooldown)
+                {
+                    Shoot();
+                    timeSinceLastShot = 0f;
+                }
+            }
         }
         else
         {
-            Animator.SetBool("running", false); // Detiene la animaciÛn si el jugador est· fuera del rango
+            Animator.SetBool("running", false); // Detiene la animaci√≥n si el jugador est√° fuera del rango
         }
+
+        timeSinceLastShot += Time.deltaTime;
     }
 
     private void Flip(bool isPlayerRight)
@@ -48,5 +66,15 @@ public class GruntSeguir : MonoBehaviour          //ENEMIGO SIGUE AL JUGADOR CUA
         }
     }
 
+    private void Shoot()
+    {
+        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
 
+        // Aplicar velocidad a la bala
+        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            rb.velocity = transform.right * bulletSpeed;  // Dispara en la direcci√≥n de la pistola
+        }
+    }
 }

@@ -1,3 +1,4 @@
+using Microsoft.Unity.VisualStudio.Editor;
 using TMPro;
 using UnityEngine;
 
@@ -7,6 +8,8 @@ public class EventTrigger : MonoBehaviour
     public TMP_Text dialogueText; // Referencia al texto de la UI
 
     public float displayTime = 3.0f;
+
+    public GameObject portraitHolder;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -19,11 +22,14 @@ public class EventTrigger : MonoBehaviour
 
             // Opcional: Desaparece el mensaje después de un tiempo
             Invoke("ClearMessage", displayTime);
+
+            portraitHolder.SetActive(true);
         }
     }
 
     private void ClearMessage()
     {
         dialogueText.text = ""; // Limpia el mensaje
+        portraitHolder.SetActive(false);
     }
 }
