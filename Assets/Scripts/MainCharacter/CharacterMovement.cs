@@ -16,6 +16,9 @@ public class CharacterMovement : MonoBehaviour
     private bool isDashing = false;
     private float dashTimeLeft = 0f;
     private float originalGravityScale;
+    private int health = 3;
+
+
 
     void Start()
     {
@@ -91,6 +94,22 @@ public class CharacterMovement : MonoBehaviour
     {
         isDashing = false;
         rb.gravityScale = originalGravityScale; // Restaurar la gravedad original
+    }
+
+
+
+    public void Hit()
+    {
+        Debug.Log("menos vida");
+        health--;
+
+        //ANIMACIÓN DE GOLPEO
+        if (health <= 0)
+        {
+            Destroy(gameObject);
+            Debug.Log("Objeto detruido");
+            //ANIMACIÓN DE MUERTE
+        }
     }
 
 }
