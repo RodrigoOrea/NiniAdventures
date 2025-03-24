@@ -16,7 +16,7 @@ public class MushScript : MonoBehaviour
 
     private bool isFacingRight = true;
     private float timeSinceLastAttack = 0f; // Tiempo desde el último ataque
-    [SerializeField] private int restoVida; //Restamos, sobre 100, vida a un jugador. Si queremos que tenga menos vida añadimos un valor mayor, y viceversa.
+    [SerializeField] private int restoVida; //Restamos, sobre 100, vida a un jugador. Si queremos que sus golpes sean mayor restamos más valor, y si menor restamos menos.
 
     void Start()
     {
@@ -80,4 +80,4 @@ public class MushScript : MonoBehaviour
 
 
 
-//INTRODUCIR OTRO TIPO DE MUSHROOM (cambiar color, tama�o, o lo que sea) QUE VIGILA DE UN PUNTO A OTRO, Y CUANDO GOLPEA SE CAE ATURDIDO (ver animaci�n) PERO QUITA M�S VIDA.
+//INTRODUCIR OTRO TIPO DE MUSHROOM (cambiar color, tamaño, o lo que sea) QUE VIGILA DE UN PUNTO A OTRO, Y CUANDO GOLPEA SE CAE ATURDIDO (ver animaci�n) PERO QUITA M�S VIDA.
