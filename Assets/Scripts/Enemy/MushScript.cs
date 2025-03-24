@@ -15,8 +15,8 @@ public class MushScript : MonoBehaviour
     [SerializeField] private float attackCooldown = 0.5f; // Cooldown entre ataques cuerpo a cuerpo
 
     private bool isFacingRight = true;
-    private float timeSinceLastAttack = 0f; // Tiempo desde el �ltimo ataque
-    private int health = 3;
+    private float timeSinceLastAttack = 0f; // Tiempo desde el último ataque
+    [SerializeField] private int restoVida; //Restamos, sobre 100, vida a un jugador. Si queremos que tenga menos vida añadimos un valor mayor, y viceversa.
 
     void Start()
     {
@@ -44,7 +44,7 @@ public class MushScript : MonoBehaviour
 
                 if (timeSinceLastAttack >= attackCooldown) {
 
-                    GameManager.Instance.RegisterBulletHit(20); // Resta una vida al jugador
+                    GameManager.Instance.RegisterBulletHit(restoVida); // Resta una vida al jugador
                     Animator.SetBool("attackingMush", false); // Desactiva la animaci�n de golpeo
 
                     timeSinceLastAttack = 0f; // Reinicia el cooldown del ataque

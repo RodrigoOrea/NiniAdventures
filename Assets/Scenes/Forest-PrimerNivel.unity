@@ -1363,11 +1363,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5849345712263122386, guid: 644891060ead2b246be284f7e0ca1ddc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.19
+      value: 20.56
       objectReference: {fileID: 0}
     - target: {fileID: 5849345712263122386, guid: 644891060ead2b246be284f7e0ca1ddc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.94
+      value: 0.95
       objectReference: {fileID: 0}
     - target: {fileID: 5849345712263122386, guid: 644891060ead2b246be284f7e0ca1ddc, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3283,11 +3283,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5849345712263122386, guid: 644891060ead2b246be284f7e0ca1ddc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.2702107
+      value: 18.03
       objectReference: {fileID: 0}
     - target: {fileID: 5849345712263122386, guid: 644891060ead2b246be284f7e0ca1ddc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.8901186
+      value: 0.03
       objectReference: {fileID: 0}
     - target: {fileID: 5849345712263122386, guid: 644891060ead2b246be284f7e0ca1ddc, type: 3}
       propertyPath: m_LocalPosition.z
@@ -11602,6 +11602,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 6745357616046463218}
+    - target: {fileID: 3431475672451490440, guid: 210ae9be934beb941b89bbd02d2003ac, type: 3}
+      propertyPath: restoVida
+      value: 35
+      objectReference: {fileID: 0}
     - target: {fileID: 6123547282680670270, guid: 210ae9be934beb941b89bbd02d2003ac, type: 3}
       propertyPath: m_Name
       value: Mushroom
