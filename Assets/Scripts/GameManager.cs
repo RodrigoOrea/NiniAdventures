@@ -1,126 +1,115 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; } // Instancia singleton
+    public static GameManager Instance { get; private set; } // Corrected Singleton Pattern
 
+    [Header("Gemini API Integration")]
     public GeminiAPI Gemini;
-    public TMP_InputField playerInput; // Referencia al InputField
+    public TMP_InputField playerInput;
     private bool isWaitingForResponse = false;
 
-    // Variables para el respawn
-    public Transform player; // Referencia al transform del jugador
-    public Transform initialRespawnPoint; // Punto de respawn inicial
-    private Transform currentRespawnPoint; // Punto de respawn actual
+    [Header("Respawn System")]
+    public Transform player; // Player transform
+    public Transform initialRespawnPoint; // Initial respawn point
+    private Transform currentRespawnPoint; // Current respawn point
 
+    [Header("Player Stats")]
     public TMP_Text textoHEALTH;
-
     private float health = 100;
 
     public TMP_Text textoAMMO;
     public int ammo = 50;
 
     public TMP_Text textoGRANADE;
-
     public int granades = 10;
 
     private static int MAX_AMMO = 50;
-
     private static int MAX_GRANADES = 10;
-
     private static int MAX_HEALTH = 100;
 
-    private void Awake()
+    [Header("Level Completion")]
+    private float startTime;
+    public int enemiesKilled = 0;
+    public GameObject levelCompleteUI;
+    public TMP_Text timeText, killText;
+
+    void Awake()
     {
-        textoAMMO.text = "AMMO: 50";
-        textoHEALTH.text = "HEALTH: 100";
-        textoGRANADE.text = "GRANADE: 10";
-        // Configura el singleton
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Opcional: Mantener el GameManager entre escenas
+            DontDestroyOnLoad(gameObject); // Keep GameManager between scenes
         }
         else
         {
-            Destroy(gameObject); // Destruye cualquier duplicado
+            Destroy(gameObject); // Destroy duplicate instances
         }
     }
 
     void Start()
     {
-        // Asigna el evento onEndEdit del InputField
+        // Initialize variables
+        startTime = Time.time;
         playerInput.onEndEdit.AddListener(OnInputEndEdit);
 
-        // Inicializa el punto de respawn
+        // Initialize respawn point
         if (initialRespawnPoint != null)
         {
             currentRespawnPoint = initialRespawnPoint;
         }
         else
         {
-            Debug.LogError("No se ha asignado un punto de respawn inicial.");
+            Debug.LogError("No initial respawn point assigned.");
         }
+
+        // Initialize UI
+        textoAMMO.text = "AMMO: " + ammo;
+        textoHEALTH.text = "HEALTH: " + health;
+        textoGRANADE.text = "GRANADES: " + granades;
     }
 
-    // Método que se llama cuando el usuario termina de editar el InputField
     private void OnInputEndEdit(string userInput)
     {
         if ((Input.GetKey(KeyCode.Return) || Input.GetKey(KeyCode.KeypadEnter)) && !isWaitingForResponse)
         {
             isWaitingForResponse = true;
-            Debug.Log("Envio prompt una vez");
             string userInput1 = userInput.Replace("\n", "").Trim();
             Gemini.SendRequest(userInput1);
             playerInput.text = "";
-            playerInput.interactable = false; // Desactiva el InputField
+            playerInput.interactable = false;
         }
     }
 
-    // Método para cambiar el punto de respawn
-    public void UpdateRespawnPoint(Transform newRespawnPoint)
-    {
-        if (newRespawnPoint != null)
-        {
-            currentRespawnPoint = newRespawnPoint;
-            Debug.Log("Punto de respawn actualizado a: " + newRespawnPoint.position);
-        }
-        else
-        {
-            Debug.LogError("El nuevo punto de respawn es nulo.");
-        }
-    }
-
-    // Método para manejar la muerte del jugador
+    // Respawn System
     public void RespawnPlayer()
     {
         if (player != null && currentRespawnPoint != null)
         {
-            // Mueve al jugador al punto de respawn
             player.position = currentRespawnPoint.position;
-            Debug.Log("Jugador respawneado en: " + currentRespawnPoint.position);
-            health = 100;
-            textoHEALTH.text = "HEALTH: " + 100;
+            health = MAX_HEALTH;
+            textoHEALTH.text = "HEALTH: " + health;
         }
         else
         {
-            Debug.LogError("El jugador o el punto de respawn no están asignados.");
+            Debug.LogError("Player or respawn point not assigned.");
         }
     }
+
     public void RegisterBulletHit(float hit)
     {
-        health -= hit; // Incrementar el contador
-        textoHEALTH.text = "HEALTH: " + health; // Actualizar el texto en la UI
-        if(health <= 0) RespawnPlayer();
+        health -= hit;
+        textoHEALTH.text = "HEALTH: " + health;
+        if (health <= 0) RespawnPlayer();
     }
 
     public void IncreaseAmmo(int amount)
     {
-        ammo = Mathf.Min(ammo + amount, MAX_AMMO);  // Aumenta la munición sin superar el máximo
+        ammo = Mathf.Min(ammo + amount, MAX_AMMO);
         granades = Mathf.Min(granades + amount, MAX_GRANADES);
         textoAMMO.text = "AMMO: " + ammo;
         textoGRANADE.text = "GRANADES: " + granades;
@@ -128,20 +117,59 @@ public class GameManager : MonoBehaviour
 
     public void DecreaseAmmo(int amount)
     {
-        ammo -= 1;
+        ammo -= amount;
         textoAMMO.text = "AMMO: " + ammo;
     }
 
     public void DecreaseGranades(int amount)
     {
-        granades -= 1;
+        granades -= amount;
         textoGRANADE.text = "GRANADES: " + granades;
     }
 
-     public void IncreaseHealth(int amount)
+    public void IncreaseHealth(int amount)
     {
-        health = Mathf.Min(health + amount, MAX_HEALTH);  // Aumenta la munición sin superar el máximo
+        health = Mathf.Min(health + amount, MAX_HEALTH);
         textoHEALTH.text = "HEALTH: " + health;
     }
 
+    // Level Completion
+    public void EnemyKilled()
+    {
+        enemiesKilled++;
+    }
+
+    public void LevelComplete()
+    {
+        float timeTaken = Time.time - startTime;
+        levelCompleteUI.SetActive(true);
+        timeText.text = "Time: " + timeTaken.ToString("F2") + "s";
+        killText.text = "Enemies Killed: " + enemiesKilled;
+        Time.timeScale = 0f; // Pause game on level complete
+    }
+
+    public void RestartLevel()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void LoadNextLevel()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
+    public void UpdateRespawnPoint(Transform newRespawnPoint)
+    {
+        if (newRespawnPoint != null)
+        {
+            currentRespawnPoint = newRespawnPoint;
+            Debug.Log("Respawn point updated to: " + newRespawnPoint.position);
+        }
+        else
+        {
+            Debug.LogError("New respawn point is null.");
+        }
+    }
 }

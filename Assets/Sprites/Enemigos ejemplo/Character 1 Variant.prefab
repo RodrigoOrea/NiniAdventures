@@ -159,10 +159,16 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+<<<<<<< Updated upstream:Assets/Sprites/Enemigos ejemplo/Character 1 Variant.prefab
   - {fileID: 1452907668394457133}
   - {fileID: 5434721572284068475}
   - {fileID: 455633095413147257}
   - {fileID: 2406856047287307746}
+=======
+  - {fileID: 1447330515339988065}
+  - {fileID: 7069274856354207066}
+  - {fileID: 8294865700325947452}
+>>>>>>> Stashed changes:Assets/Prefabs/Character/Character 1.prefab
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3892577262694506017
@@ -284,6 +290,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d694f277e777a084d914ca40d4b51ec1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+<<<<<<< Updated upstream:Assets/Sprites/Enemigos ejemplo/Character 1 Variant.prefab
   weaponHolder: {fileID: 2406856047287307746}
 --- !u!1 &4851931569004612593
 GameObject:
@@ -423,6 +430,10 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
 --- !u!1 &6192127409377334820
+=======
+  weaponHolder: {fileID: 8294865700325947452}
+--- !u!1 &6665015798929722227
+>>>>>>> Stashed changes:Assets/Prefabs/Character/Character 1.prefab
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

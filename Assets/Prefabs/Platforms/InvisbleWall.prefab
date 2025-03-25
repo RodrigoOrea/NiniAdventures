@@ -54,7 +54,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5080871821008919850, guid: 413a4ffaddf36bb4386e20030700f1f3, type: 3}
       propertyPath: m_Name
-      value: Floor Variant
+      value: InvisbleWall
+      objectReference: {fileID: 0}
+    - target: {fileID: 5080871821008919850, guid: 413a4ffaddf36bb4386e20030700f1f3, type: 3}
+      propertyPath: m_TagString
+      value: CameraBoundary
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
