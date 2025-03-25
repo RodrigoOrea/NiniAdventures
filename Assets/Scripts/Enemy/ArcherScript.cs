@@ -25,8 +25,8 @@ public class ArcherScript : MonoBehaviour
     private float lastShotTime;
 
     [Header("Projectile")]
-    [SerializeField] private GameObject arrowPrefab;
-    [SerializeField] private Transform shootPoint;
+    public GameObject Flecha;  // Asignar el prefab de la flecha en el Inspector
+    public Transform shootPoint;  // Crea un GameObject hijo como punto de disparo
 
     void Start()
     {
@@ -92,17 +92,31 @@ public class ArcherScript : MonoBehaviour
     {
         if (Time.time - lastShotTime >= timeBetweenShots)
         {
-            animator.SetBool("shootingArcher", true);
+            animator.SetTrigger("Shoot");
             lastShotTime = Time.time;
         }
     }
 
-    /*// Llamado desde Animation Event al final de la animación "shootingArcher"
-    void ShootArrow()
+    // Este método se llamaa desde un Animation Event
+    public void ShootArrow()
     {
-        Instantiate(arrowPrefab, shootPoint.position, Quaternion.identity);
-        animator.SetBool("shootingArcher", false);
-    }*/
+
+        Debug.Log("¡Flecha disparada!"); // Debe aparecer en la consola de Unity.
+        if (Flecha == null || shootPoint == null) return;
+
+        // Calcular dirección al jugador
+        Vector3 direction = (player.position - shootPoint.position).normalized;
+
+        // Instanciar flecha
+        GameObject nuevaFlecha = Instantiate(Flecha, shootPoint.position, Quaternion.identity);
+
+        // Rotar flecha según dirección
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        nuevaFlecha.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+        // Configurar dirección
+        nuevaFlecha.GetComponent<FlechaScript>().SetDirection(direction);
+    }
 
     void LookAtPlayer()
     {

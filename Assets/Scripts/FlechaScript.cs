@@ -1,22 +1,43 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FlechaScript : MonoBehaviour
 {
+    private Rigidbody2D rb;
+    public float speed;  // Asegúrate de asignar un valor en el Inspector
+    private Vector3 direction;
 
-    public float Speed;
-    private Rigidbody2D Rigibody2D;
-    // Start is called before the first frame update
     void Start()
     {
-        Rigibody2D = GetComponent<Rigidbody2D>();
-        
+        rb = GetComponent<Rigidbody2D>();
+        // Destruir automáticamente después de 3 segundos si no choca con nada
+        Destroy(gameObject, 3f);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
-        Rigibody2D.velocity = Vector2.right * Speed;
+        if (direction != Vector3.zero)
+        {
+            rb.velocity = direction * speed;
+        }
     }
+
+    public void SetDirection(Vector3 newDirection)
+    {
+        direction = newDirection;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        // Evitar colisión con el propio arquero
+        if (collision.gameObject.CompareTag("Enemy")) return;
+
+        CharacterMovement jugador = collision.GetComponent<CharacterMovement>();
+        if (jugador != null)
+        {
+            jugador.Hit();
+        }
+        Destroy(gameObject);
+    }
+
+
 }

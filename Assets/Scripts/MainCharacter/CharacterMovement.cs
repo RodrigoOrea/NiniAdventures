@@ -16,7 +16,7 @@ public class CharacterMovement : MonoBehaviour
     private bool isDashing = false;
     private float dashTimeLeft = 0f;
     private float originalGravityScale;
-    private int health = 3;
+    private int health = 5;
 
 
 
