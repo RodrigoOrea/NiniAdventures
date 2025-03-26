@@ -11304,12 +11304,20 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8672342601424331511, guid: c14fac473a0607040a2ab249d12f084e, type: 3}
+      propertyPath: speed
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8672342601424331511, guid: c14fac473a0607040a2ab249d12f084e, type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8782038432585959711, guid: c14fac473a0607040a2ab249d12f084e, type: 3}
       propertyPath: m_BodyType
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8782038432585959711, guid: c14fac473a0607040a2ab249d12f084e, type: 3}
+      propertyPath: m_GravityScale
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8805698116516967456, guid: c14fac473a0607040a2ab249d12f084e, type: 3}
       propertyPath: grenadePrefab
