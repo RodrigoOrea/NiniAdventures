@@ -9,7 +9,7 @@ public class Checkpoint : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             gameManager.UpdateRespawnPoint(transform); // Actualiza el respawn al checkpoint actual
-            gameObject.SetActive(false);
+            Destroy(gameObject);
             Debug.Log("Checkpoint alcanzado!");
         }
     }
