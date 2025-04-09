@@ -19,8 +19,8 @@ TagManager:
   - Player
   - PlayerBullet
   - Items
-  - 
-  - 
+  - Enemy
+  - Elevator
   - 
   - 
   - 

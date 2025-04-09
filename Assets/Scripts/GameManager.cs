@@ -34,6 +34,14 @@ public class GameManager : MonoBehaviour
 
     private static int MAX_HEALTH = 100;
 
+
+    public int dañoRealizado;
+    public int dañoRecibido;
+
+    public int enemiesKilled;
+
+
+
     private void Awake()
     {
         textoAMMO.text = "AMMO: 50";
@@ -116,6 +124,7 @@ public class GameManager : MonoBehaviour
         health -= hit; // Incrementar el contador
         textoHEALTH.text = "HEALTH: " + health; // Actualizar el texto en la UI
         if(health <= 0) RespawnPlayer();
+        IncreaseDamageTaken((int)hit);
     }
 
     public void IncreaseAmmo(int amount)
@@ -142,6 +151,18 @@ public class GameManager : MonoBehaviour
     {
         health = Mathf.Min(health + amount, MAX_HEALTH);  // Aumenta la munición sin superar el máximo
         textoHEALTH.text = "HEALTH: " + health;
+    }
+
+    public void IncreaseDamageDone(int amount){
+        dañoRealizado += amount;
+    }
+
+    public void IncreaseDamageTaken(int amount){
+        dañoRecibido += amount;
+    }
+
+    public void IncreaseEnemiesKilled(int amount){
+        enemiesKilled += amount;
     }
 
 }

@@ -29,7 +29,9 @@ public class FlechaScript : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // Evitar colisi�n con el propio arquero
-        if (collision.gameObject.CompareTag("Enemy")) return;
+        if (collision.gameObject.CompareTag("Player")) {
+            GameManager.Instance.RegisterBulletHit(20);
+            Destroy(gameObject);}
 
         GameManager.Instance.RegisterBulletHit(20);
         Destroy(gameObject);

@@ -32,14 +32,35 @@ public class PlayerController : MonoBehaviour
         flashMaterial.color = Color.white;
     }
 
+    [SerializeField] private LayerMask movingPlatformLayer;
+    private Collider2D currentPlatform;
+
     void Update()
     {
-        // Verificar si el jugador está en el suelo
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.05f, groundLayer);
-        if (isGrounded) animator.SetBool("IsJumping", false);
-        else animator.SetBool("IsJumping", true);
-
-        // Movimiento horizontal
+        // Detectar si estamos sobre cualquier plataforma (fija o móvil)
+        Collider2D groundCheckCollider = Physics2D.OverlapCircle(groundCheck.position, 0.05f, groundLayer);
+        Collider2D platformCheckCollider = Physics2D.OverlapCircle(groundCheck.position, 0.05f, movingPlatformLayer);
+        
+        bool wasGrounded = isGrounded;
+        isGrounded = groundCheckCollider != null || platformCheckCollider != null;
+        
+        // Si acabamos de aterrizar en una nueva plataforma
+        if (!wasGrounded && isGrounded)
+        {
+            currentPlatform = platformCheckCollider ?? groundCheckCollider;
+        }
+        
+        // Si estamos en el aire pero todavía conectados a una plataforma móvil (ascensor)
+        if (!isGrounded && currentPlatform != null && 
+            currentPlatform.OverlapPoint(groundCheck.position))
+        {
+            isGrounded = true;
+        }
+        
+        animator.SetBool("IsJumping", !isGrounded);
+        
+        // Resto del código...
+         // Movimiento horizontal
         float moveInput = Input.GetAxis("Horizontal");
         animator.SetFloat("Speed", Mathf.Abs(moveInput));
 
@@ -50,6 +71,20 @@ public class PlayerController : MonoBehaviour
         else if (moveInput < 0)
         {
             transform.localScale = new Vector3(-1, 1, 1); // Mirar a la izquierda
+        }
+    }
+
+    void LateUpdate()
+    {
+        // Moverse con la plataforma si es móvil
+        if (isGrounded && currentPlatform != null && 
+            ((1 << currentPlatform.gameObject.layer) & movingPlatformLayer) != 0)
+        {
+            transform.parent = currentPlatform.transform;
+        }
+        else
+        {
+            transform.parent = null;
         }
     }
 
@@ -87,6 +122,8 @@ public class PlayerController : MonoBehaviour
         //Debug.Log("Player has died!");
         //Destroy(gameObject);
     //}
+
+    
 
     
 }
