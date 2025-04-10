@@ -165,4 +165,45 @@ public class GameManager : MonoBehaviour
         enemiesKilled += amount;
     }
 
+
+    public TMP_Text dialogueText;
+
+    private string currentMessage = "";
+    private GameObject currentPortrait = null;
+
+
+    public void ShowMessage(string message, float duration, GameObject portraitToShow)
+    {
+        CancelInvoke(nameof(ClearMessage));
+
+        currentMessage = message;
+
+        // Actualizar el texto
+        dialogueText.text = message;
+
+        // Ocultar retrato anterior si hay uno
+        if (currentPortrait != null && currentPortrait != portraitToShow)
+            currentPortrait.SetActive(false);
+
+        // Mostrar el nuevo retrato
+        currentPortrait = portraitToShow;
+        if (currentPortrait != null)
+            currentPortrait.SetActive(true);
+
+        Invoke(nameof(ClearMessage), duration);
+    }
+
+    private void ClearMessage()
+    {
+        if (dialogueText.text == currentMessage)
+        {
+            dialogueText.text = "";
+
+            if (currentPortrait != null)
+                currentPortrait.SetActive(false);
+
+            currentPortrait = null;
+        }
+    }
+
 }
