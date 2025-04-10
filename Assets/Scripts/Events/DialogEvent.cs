@@ -13,6 +13,7 @@ public class EventTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            Debug.Log("Diálogo");
             GameManager.Instance.ShowMessage(message, displayTime, portrait);
             GetComponent<Collider2D>().enabled = false;
         }

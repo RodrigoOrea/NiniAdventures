@@ -40,6 +40,8 @@ public class GameManager : MonoBehaviour
 
     public int enemiesKilled;
 
+    public string personajeText;
+
 
 
     private void Awake()
@@ -83,7 +85,7 @@ public class GameManager : MonoBehaviour
             isWaitingForResponse = true;
             Debug.Log("Envio prompt una vez");
             string userInput1 = userInput.Replace("\n", "").Trim();
-            Gemini.SendRequest(userInput1);
+            Gemini.SendRequest(userInput1, personajeText);
             playerInput.text = "";
             playerInput.interactable = false; // Desactiva el InputField
         }
@@ -191,6 +193,8 @@ public class GameManager : MonoBehaviour
             currentPortrait.SetActive(true);
 
         Invoke(nameof(ClearMessage), duration);
+
+        personajeText = message;
     }
 
     private void ClearMessage()

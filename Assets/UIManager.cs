@@ -70,7 +70,7 @@ public class UIManager : MonoBehaviour
         yield return StartCoroutine(FadeNegro(1f, 1f));
 
         // Cargar escena del menú
-        SceneManager.LoadScene("menu");
+        SceneManager.LoadScene("Splash");
     }
 
 }

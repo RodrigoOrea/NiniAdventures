@@ -15,7 +15,6 @@ public class DestructibleTilemap : MonoBehaviour
     private void Awake()
     {
         tilemap = GetComponent<Tilemap>();
-        if (debugMode) Debug.Log($"Tilemap asignado: {tilemap.name}");
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -26,20 +25,11 @@ public class DestructibleTilemap : MonoBehaviour
         {
             if (debugMode) Debug.Log("Es un jugador");
 
-            ContactPoint2D contact = collision.GetContact(0);
-            Vector3 hitPosition = contact.point;
-            Vector3Int tilePosition = tilemap.WorldToCell(hitPosition);
-
-            if (debugMode) Debug.Log($"Posición del tile: {tilePosition}");
-
-            if (tilemap.GetTile(tilePosition) != null)
-            {
-                if (debugMode) Debug.Log($"Tile encontrado en posición: {tilePosition}");
-                StartCoroutine(DestroyTile(tilePosition));
-            }
-            else
-            {
-                if (debugMode) Debug.LogWarning($"No hay tile en {tilePosition}");
+            UnityEngine.Vector3 hitPosition = Vector3.zero;
+            foreach(ContactPoint2D hit in collision.contacts){
+                hitPosition.x = hit.point.x;
+                hitPosition.y = hit.point.y - 0.5f * hit.normal.y;
+                tilemap.SetTile(tilemap.WorldToCell(hitPosition), null);
             }
         }
     }

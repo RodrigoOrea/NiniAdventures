@@ -9,14 +9,16 @@ public class GeminiAPI : MonoBehaviour
     private string apiKey = "AIzaSyACQdPPLW3Pw1w562V6NEjmjFWAs1MIaWk"; // Reemplaza con tu clave de API
     private string apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
 
-    public void SendRequest(string prompt)
+    public GameObject portrait;
+
+    public void SendRequest(string prompt, string personajeText)
     {
-        StartCoroutine(PostRequest(prompt));
+        StartCoroutine(PostRequest(prompt, personajeText));
     }
 
-    IEnumerator PostRequest(string prompt)
+    IEnumerator PostRequest(string prompt, string personajeText)
     {
-        string jsonData = $"{{\"contents\":[{{\"parts\":[{{\"text\":\"{"Estas siendo usada para representar a un personaje dentro de un videojuego. Tus respuestas al siguiente( o siguientes mensajes) han de ser como si respondiera una personalidad carismática como la de deadpool. Responde en un maximo de 15 palabras. Mensaje del jugador: " + prompt}\"}}]}}]}}";
+        string jsonData = $"{{\"contents\":[{{\"parts\":[{{\"text\":\"{"Estas siendo usada para representar a un personaje dentro de un videojuego. Ahora mismo representas a un cactus aburrido del desierto, con personalidad lamentable e insistente. Responde en un maximo de 15 palabras. Acabas de decir: " + personajeText + ". Mensaje del jugador: " + prompt}\"}}]}}]}}";
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
 
         UnityWebRequest request = new UnityWebRequest(apiUrl + "?key=" + apiKey, "POST");
@@ -34,11 +36,11 @@ public class GeminiAPI : MonoBehaviour
         else
         {
             string responseTextValue = ParseResponse(request.downloadHandler.text);
-            responseText.text = responseTextValue; // Muestra la respuesta en la UI
+            GameManager.Instance.ShowMessage(responseTextValue, 3f, portrait);
             Debug.Log("Respuesta de Gemini: " + responseTextValue);
 
             // Inicia una corrutina para borrar el texto después de 5 segundos
-            StartCoroutine(ClearTextAfterDelay(5f));
+            //StartCoroutine(ClearTextAfterDelay(5f));
         }
     }
 
