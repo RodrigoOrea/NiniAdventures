@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3431475672451490440}
   - component: {fileID: 3852310199398186346}
   - component: {fileID: -2194798778086782690}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Mushroom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -154,6 +154,7 @@ MonoBehaviour:
   attackRange: 2
   player: {fileID: 0}
   attackCooldown: 1
+  restoVida: 20
 --- !u!61 &3852310199398186346
 BoxCollider2D:
   m_ObjectHideFlags: 0

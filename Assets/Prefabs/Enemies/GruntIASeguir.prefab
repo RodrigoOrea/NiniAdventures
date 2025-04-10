@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4982263406373083094}
   - component: {fileID: 6869603225362591208}
   - component: {fileID: 599853219729236639}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: GruntIASeguir
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -225,7 +225,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5039720897957682148}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: FirePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}

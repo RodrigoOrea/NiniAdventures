@@ -3,13 +3,13 @@ using UnityEngine;
 public class FlechaScript : MonoBehaviour
 {
     private Rigidbody2D rb;
-    public float speed;  // Asegúrate de asignar un valor en el Inspector
+    public float speed;  // Asegï¿½rate de asignar un valor en el Inspector
     private Vector3 direction;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        // Destruir automáticamente después de 3 segundos si no choca con nada
+        // Destruir automï¿½ticamente despuï¿½s de 3 segundos si no choca con nada
         Destroy(gameObject, 3f);
     }
 
@@ -28,14 +28,12 @@ public class FlechaScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Evitar colisión con el propio arquero
-        if (collision.gameObject.CompareTag("Enemy")) return;
+        // Evitar colisiï¿½n con el propio arquero
+        if (collision.gameObject.CompareTag("Player")) {
+            GameManager.Instance.RegisterBulletHit(20);
+            Destroy(gameObject);}
 
-        CharacterMovement jugador = collision.GetComponent<CharacterMovement>();
-        if (jugador != null)
-        {
-            jugador.Hit();
-        }
+        GameManager.Instance.RegisterBulletHit(20);
         Destroy(gameObject);
     }
 

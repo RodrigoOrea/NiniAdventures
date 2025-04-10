@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EventTrigger : MonoBehaviour
 {
+    [TextArea]
     public string message; // Mensaje que dirá el personaje
     public TMP_Text dialogueText; // Referencia al texto de la UI
 

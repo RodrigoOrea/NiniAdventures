@@ -2,69 +2,185 @@ using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour
 {
+    [Header("Movement Settings")]
     public float speed = 5f;
     public float jumpForce = 7f;
     public float dashForce = 10f;
     public float dashDuration = 0.2f;
+
+    [Header("Ground Detection")]
     public LayerMask groundLayer;
+    public LayerMask movingPlatformLayer;
+    public LayerMask elevatorLayer; // Nueva capa para el elevador
+    public Transform groundCheck;
+    public float groundCheckRadius = 0.2f;
 
+    [Header("Health and Impact")]
+    public float health = 100f;
+    private Material originalMaterial;
+    private Material flashMaterial;
+    private SpriteRenderer spriteRenderer;
 
+    // Components
     private Rigidbody2D rb;
+    private Animator animator;
+
+    // States
     private bool isGrounded;
-    private int jumpCount = 0;
-    private int dashCount = 0; // Contador de dashes
     private bool isDashing = false;
     private float dashTimeLeft = 0f;
-    private float originalGravityScale;
-    private int health = 5;
 
+    private int jumpCount = 0;
+    private int dashCount = 0;
 
+    private Collider2D currentPlatform;
+    private Vector2 platformVelocity;
+    private Transform previousParent; // Para guardar el padre anterior
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        originalGravityScale = rb.gravityScale; // Guardar la escala de gravedad original
+        animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
+        originalMaterial = spriteRenderer.material;
+        flashMaterial = new Material(Shader.Find("Sprites/Default"));
+        flashMaterial.color = Color.white;
+        
+        previousParent = transform.parent; // Guardar el padre inicial
     }
 
     void Update()
     {
         if (!isDashing)
         {
-            // Movimiento horizontal
-            float moveX = Input.GetAxis("Horizontal") * speed;
-            rb.velocity = new Vector2(moveX, rb.velocity.y);
+            HandleGroundDetection();
+            HandleJump();
+            HandleDash();
+            HandleAnimationAndDirection();
+        }
+        else
+        {
+            dashTimeLeft -= Time.deltaTime;
+            if (dashTimeLeft <= 0) StopDash();
+        }
+    }
 
-            // Detectar si está en el suelo
-            isGrounded = Physics2D.Raycast(transform.position, Vector2.down, 1.5f, groundLayer);
+    private void FixedUpdate()
+    {
+        if (!isDashing)
+        {
+            HandleHorizontalMovement();
+            // Eliminamos ApplyPlatformMovement() ya que lo manejaremos diferente
+        }
+    }
 
-            // Reiniciar los contadores de saltos y dashes si está en el suelo
-            if (isGrounded)
+    void HandleGroundDetection()
+    {
+        bool wasGrounded = isGrounded;
+
+        Collider2D groundCollider = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+        Collider2D platformCollider = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, movingPlatformLayer);
+        Collider2D elevatorCollider = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, elevatorLayer);
+
+        isGrounded = groundCollider != null || platformCollider != null || elevatorCollider != null;
+
+        if (isGrounded)
+        {
+            // Solo nos hacemos hijos del elevador, no de otras plataformas
+            if (elevatorCollider != null)
             {
-                jumpCount = 0;
-                dashCount = 0; // Reiniciar el contador de dashes
+                currentPlatform = elevatorCollider;
+                if (transform.parent != elevatorCollider.transform)
+                {
+                    previousParent = transform.parent;
+                    transform.SetParent(elevatorCollider.transform);
+                    rb.interpolation = RigidbodyInterpolation2D.None;
+                }
+            }
+            else
+            {
+                currentPlatform = platformCollider ?? groundCollider;
+                if (transform.parent != previousParent)
+                {
+                    transform.SetParent(previousParent);
+                    rb.interpolation = RigidbodyInterpolation2D.Interpolate;
+                }
             }
 
-            // Saltar cuando se presiona la barra espaciadora
-            if (Input.GetKeyDown(KeyCode.Space) && (isGrounded || jumpCount < 1))
+            if (!wasGrounded) platformVelocity = Vector2.zero;
+        }
+        else
+        {
+            currentPlatform = null;
+            if (transform.parent != previousParent)
             {
-                rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-                jumpCount++;
+                transform.SetParent(previousParent);
+                rb.interpolation = RigidbodyInterpolation2D.Interpolate;
             }
+        }
 
-            // Dash cuando se presiona la tecla Q y no se ha usado el dash en este salto
-            if (Input.GetKeyDown(KeyCode.Q) && dashCount < 1)
+        if (isGrounded)
+        {
+            jumpCount = 0;
+            dashCount = 0;
+        }
+    }
+
+    void HandleHorizontalMovement()
+    {
+        float moveInput = Input.GetAxis("Horizontal");
+        float targetVelocityX = moveInput * speed;
+        
+        // Si estamos en un elevador, mantenemos nuestra velocidad relativa
+        if (currentPlatform != null && currentPlatform.gameObject.layer == LayerMask.NameToLayer("Elevator"))
+        {
+            Rigidbody2D platformRb = currentPlatform.GetComponent<Rigidbody2D>();
+            if (platformRb != null)
             {
-                StartDash();
+                // Calculamos velocidad relativa al ascensor
+                float relativeVelocityX = targetVelocityX - platformRb.velocity.x;
+                rb.velocity = new Vector2(relativeVelocityX, rb.velocity.y);
+            }
+            else
+            {
+                rb.velocity = new Vector2(targetVelocityX, rb.velocity.y);
             }
         }
         else
         {
-            // Manejar la duración del dash
-            dashTimeLeft -= Time.deltaTime;
-            if (dashTimeLeft <= 0)
-            {
-                StopDash();
-            }
+            rb.velocity = new Vector2(targetVelocityX, rb.velocity.y);
+        }
+    }
+
+    void ApplyPlatformMovement()
+    {
+        if (currentPlatform != null && isGrounded)
+        {
+            Rigidbody2D platformRB = currentPlatform.GetComponent<Rigidbody2D>();
+            Vector2 newPlatformVelocity = platformRB != null ? platformRB.velocity : Vector2.zero;
+
+            rb.velocity = new Vector2(rb.velocity.x, newPlatformVelocity.y);
+            platformVelocity = Vector2.Lerp(platformVelocity, newPlatformVelocity, Time.fixedDeltaTime * 10f);
+        }
+    }
+
+    void HandleJump()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && (isGrounded || jumpCount < 1))
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            jumpCount++;
+            currentPlatform = null;
+            transform.SetParent(previousParent); // Dejar de ser hijo al saltar
+        }
+    }
+
+    void HandleDash()
+    {
+        if (Input.GetKeyDown(KeyCode.Q) && dashCount < 1)
+        {
+            StartDash();
         }
     }
 
@@ -72,44 +188,51 @@ public class CharacterMovement : MonoBehaviour
     {
         isDashing = true;
         dashTimeLeft = dashDuration;
-        dashCount++; // Incrementar el contador de dashes
+        dashCount++;
 
-        // Desactivar la gravedad durante el dash
-        rb.gravityScale = 0;
-
-        // Determinar la dirección del dash basado en la entrada horizontal actual
         float dashDirection = Mathf.Sign(Input.GetAxis("Horizontal"));
+        if (dashDirection == 0) dashDirection = Mathf.Sign(transform.localScale.x);
 
-        // Si no hay entrada horizontal, usar la dirección en la que el personaje está mirando
-        if (dashDirection == 0)
-        {
-            dashDirection = Mathf.Sign(transform.localScale.x);
-        }
-
-        // Aplicar el dash en la dirección determinada
-        rb.velocity = new Vector2(dashDirection * dashForce, 0); // Mantener la altura actual
+        rb.velocity = new Vector2(dashDirection * dashForce, 0);
+        currentPlatform = null;
+        transform.SetParent(previousParent); // Dejar de ser hijo al hacer dash
     }
 
     void StopDash()
     {
         isDashing = false;
-        rb.gravityScale = originalGravityScale; // Restaurar la gravedad original
+        rb.velocity = new Vector2(rb.velocity.x * 0.5f, 0);
     }
 
-
-
-    public void Hit()
+    void HandleAnimationAndDirection()
     {
-        Debug.Log("menos vida");
-        health--;
+        float moveInput = Input.GetAxis("Horizontal");
+        animator.SetFloat("Speed", Mathf.Abs(moveInput));
+        animator.SetBool("IsJumping", !isGrounded);
 
-        //ANIMACIÓN DE GOLPEO
-        if (health <= 0)
+        if (moveInput > 0)
+            transform.localScale = new Vector3(1, 1, 1);
+        else if (moveInput < 0)
+            transform.localScale = new Vector3(-1, 1, 1);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("enemyBullet"))
         {
-            Destroy(gameObject);
-            Debug.Log("Objeto detruido");
-            //ANIMACIÓN DE MUERTE
+            FlashWhite(0.1f);
+            GameManager.Instance.RegisterBulletHit(15.0f);
         }
     }
 
+    public void FlashWhite(float duration)
+    {
+        spriteRenderer.material = flashMaterial;
+        Invoke("RestoreMaterial", duration);
+    }
+
+    private void RestoreMaterial()
+    {
+        spriteRenderer.material = originalMaterial;
+    }
 }

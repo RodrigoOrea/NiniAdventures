@@ -27,6 +27,8 @@ public class EnemyHealth : MonoBehaviour
         
         StartCoroutine(FlashWhite()); // Efecto visual
 
+        GameManager.Instance.IncreaseDamageDone(damage);
+
         if (health <= 0)
         {
             Die();
@@ -44,5 +46,6 @@ public class EnemyHealth : MonoBehaviour
     {
         Debug.Log("Enemigo ha muerto.");
         Destroy(gameObject);
+        GameManager.Instance.IncreaseEnemiesKilled(1);
     }
 }
