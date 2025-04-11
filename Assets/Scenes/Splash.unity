@@ -641,7 +641,7 @@ MonoBehaviour:
   m_text: ~ NINI ADVENTURES ~
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bde68dda04e16be4c9930839862bb9df, type: 2}
-  m_sharedMaterial: {fileID: -1700759295108343937, guid: bde68dda04e16be4c9930839862bb9df, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 2f086703decfd48419a2cdebc946c1e8, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
