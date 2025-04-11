@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour
@@ -37,6 +38,8 @@ public class CharacterMovement : MonoBehaviour
     private Vector2 platformVelocity;
     private Transform previousParent; // Para guardar el padre anterior
 
+    public TMP_InputField inputField;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -52,6 +55,9 @@ public class CharacterMovement : MonoBehaviour
 
     void Update()
     {
+        // Si el input está enfocado, bloqueamos el control del jugador
+        if (inputField != null && inputField.isFocused)
+            return;
         if (!isDashing)
         {
             HandleGroundDetection();
@@ -68,6 +74,8 @@ public class CharacterMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (inputField != null && inputField.isFocused)
+            return;
         if (!isDashing)
         {
             HandleHorizontalMovement();

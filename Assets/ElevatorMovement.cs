@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 public class ElevatorMovement : MonoBehaviour
 {
@@ -39,7 +40,7 @@ public class ElevatorMovement : MonoBehaviour
         }
     }
 
-    private void MoveToTarget()
+        private void MoveToTarget()
     {
         transform.position = Vector3.MoveTowards(
             transform.position,
@@ -50,18 +51,47 @@ public class ElevatorMovement : MonoBehaviour
         if (Mathf.Approximately(transform.position.y, targetY))
         {
             isMoving = false;
-            isWaiting = true;
+
+            // Si ha llegado al fondo, espera 5 segundos antes de volver a subir
+            if (Mathf.Approximately(targetY, bottomY))
+            {
+                StartCoroutine(WaitAtBottom());
+            }
+            else
+            {
+                isWaiting = true;
+            }
+
             Debug.Log($"Llegó a {targetY} en {Time.time}");
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private IEnumerator WaitAtBottom()
+    {
+        isWaiting = true;
+        yield return new WaitForSeconds(10f);
+        isWaiting = false;
+        isMoving = true;
+        targetY = startPos.y; // Ahora sube
+    }
+
+        private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player") && !isMoving && !isWaiting)
         {
             Debug.Log("Player");
-            isMoving = true;
-            targetY = bottomY; // Forzar bajada al entrar el jugador
+            StartCoroutine(WaitAndMove());
         }
+    }
+
+    private IEnumerator WaitAndMove()
+    {
+        isWaiting = true;
+
+        yield return new WaitForSeconds(4f); // Espera 4 segundos
+
+        isWaiting = false;
+        isMoving = true;
+        targetY = bottomY; // Ahora sí inicia el movimiento hacia abajo
     }
 }

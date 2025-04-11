@@ -19,20 +19,13 @@ public class SecondElevator : MonoBehaviour
             alreadyTriggered = true;
             SpawnObject();
             Debug.Log("Enemigo generado correctamente");
-            StartCoroutine(ResetTrigger(cooldownTime));
         }
     }
 
     private void SpawnObject()
     {
-        Instantiate(enemy, spawnPosition.position, Quaternion.identity);
+        //Instantiate(enemy, spawnPosition.position, Quaternion.identity);
         Instantiate(enemy2, spawnPosition.position, Quaternion.identity);
         Destroy(GetComponent<Collider2D>()); // Solo destruye el collider
-    }
-
-    private IEnumerator ResetTrigger(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        alreadyTriggered = false;
     }
 }

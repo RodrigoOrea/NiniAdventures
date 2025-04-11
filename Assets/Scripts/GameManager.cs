@@ -40,6 +40,8 @@ public class GameManager : MonoBehaviour
 
     public int enemiesKilled;
 
+    public string personajeText;
+
 
 
     private void Awake()
@@ -83,7 +85,7 @@ public class GameManager : MonoBehaviour
             isWaitingForResponse = true;
             Debug.Log("Envio prompt una vez");
             string userInput1 = userInput.Replace("\n", "").Trim();
-            Gemini.SendRequest(userInput1);
+            Gemini.SendRequest(userInput1, personajeText);
             playerInput.text = "";
             playerInput.interactable = false; // Desactiva el InputField
         }
@@ -163,6 +165,49 @@ public class GameManager : MonoBehaviour
 
     public void IncreaseEnemiesKilled(int amount){
         enemiesKilled += amount;
+    }
+
+
+    public TMP_Text dialogueText;
+
+    private string currentMessage = "";
+    private GameObject currentPortrait = null;
+
+
+    public void ShowMessage(string message, float duration, GameObject portraitToShow)
+    {
+        CancelInvoke(nameof(ClearMessage));
+
+        currentMessage = message;
+
+        // Actualizar el texto
+        dialogueText.text = message;
+
+        // Ocultar retrato anterior si hay uno
+        if (currentPortrait != null && currentPortrait != portraitToShow)
+            currentPortrait.SetActive(false);
+
+        // Mostrar el nuevo retrato
+        currentPortrait = portraitToShow;
+        if (currentPortrait != null)
+            currentPortrait.SetActive(true);
+
+        Invoke(nameof(ClearMessage), duration);
+
+        personajeText = message;
+    }
+
+    private void ClearMessage()
+    {
+        if (dialogueText.text == currentMessage)
+        {
+            dialogueText.text = "";
+
+            if (currentPortrait != null)
+                currentPortrait.SetActive(false);
+
+            currentPortrait = null;
+        }
     }
 
 }
