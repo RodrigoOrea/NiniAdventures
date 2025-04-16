@@ -7,7 +7,7 @@ public class MainMenuManager : MonoBehaviour
 {
     public void StartGame() //BOTON PLAY
     {
-        SceneManager.LoadScene("Forest-PrimerNivel");  // Cambia "Level1" por tu escena.
+        SceneManager.LoadScene("LevelForest-PrimerNivel");  // Cambia "Level1" por tu escena.
     }
 
     public void ShowLevelSelector() //BOTON NIVELES
@@ -21,8 +21,9 @@ public class MainMenuManager : MonoBehaviour
     }
     
 
-    public void Settings() //BOTÓN AJUSTES (falta por acabar)
+    public void Settings() //BOTÓN AJUSTES 
     {
+        SceneManager.LoadScene("Settings");
 
     }
 

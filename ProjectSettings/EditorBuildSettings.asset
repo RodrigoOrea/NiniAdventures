@@ -12,10 +12,10 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 46722097f1d68994cb3e02468a830862
   - enabled: 1
-    path: Assets/Scenes/Forest-PrimerNivel.unity
+    path: Assets/Scenes/LevelForest-PrimerNivel.unity
     guid: f9b1d789aeb2db941be6e4a862d52c1d
   - enabled: 1
-    path: Assets/Scenes/Desert-SecondLevel.unity
+    path: Assets/Scenes/LevelDesert-SecondLevel.unity
     guid: edbc39b9b7884a34891f969fdfff3a5b
   - enabled: 1
     path: Assets/Scenes/Credits.unity
@@ -23,5 +23,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Levels.unity
     guid: 9f7b0b6651c769a4395d47875e1abb3e
+  - enabled: 1
+    path: Assets/Scenes/Settings.unity
+    guid: 0c0f26d418a9683458bb5d941fdf437b
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
