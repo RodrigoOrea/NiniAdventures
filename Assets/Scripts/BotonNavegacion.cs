@@ -7,12 +7,12 @@ public class BotonNavegacion : MonoBehaviour
 {
     public void CargarPrimerNivel()
     {
-        SceneManager.LoadScene("Forest-PrimerNivel");
+        SceneManager.LoadScene("LevelForest-PrimerNivel");
     }
 
 
     public void CargarSegundoNivel()
     {
-        SceneManager.LoadScene("Desert-SecondLevel");
+        SceneManager.LoadScene("LevelDesert-SecondLevel");
     }
 }
