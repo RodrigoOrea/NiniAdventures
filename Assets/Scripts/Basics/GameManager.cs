@@ -87,7 +87,7 @@ public class GameManager : MonoBehaviour
             string userInput1 = userInput.Replace("\n", "").Trim();
             Gemini.SendRequest(userInput1, personajeText);
             playerInput.text = "";
-            playerInput.interactable = false; // Desactiva el InputField
+            //playerInput.interactable = false; // Desactiva el InputField
         }
     }
 
