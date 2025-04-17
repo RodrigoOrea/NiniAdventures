@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 9039279302200845940}
   - component: {fileID: 7612108495628411104}
   - component: {fileID: 4707645511836554833}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: ConversationEvent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,9 +47,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   message: Ejemplo de dialogo
-  dialogueText: {fileID: 0}
   displayTime: 3
-  portraitHolder: {fileID: 0}
+  portrait: {fileID: 0}
 --- !u!114 &7612108495628411104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,6 +62,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputField: {fileID: 0}
+  disableTime: 7
 --- !u!61 &4707645511836554833
 BoxCollider2D:
   m_ObjectHideFlags: 0

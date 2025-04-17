@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2726320951797109488}
   - component: {fileID: -4516787353689906238}
   - component: {fileID: 5464207392536764693}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GrenadeSS_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -127,7 +127,7 @@ MonoBehaviour:
   damage: 50
   damageLayer:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 1024
 --- !u!50 &2726320951797109488
 Rigidbody2D:
   serializedVersion: 4

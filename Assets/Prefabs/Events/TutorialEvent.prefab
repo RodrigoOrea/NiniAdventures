@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 9215810159628438827}
   - component: {fileID: 4087910621045907831}
   - component: {fileID: 6759590880474966269}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: TutorialEvent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91,6 +91,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   message: Ejemplo de dialogo
-  dialogueText: {fileID: 0}
   displayTime: 3
-  portraitHolder: {fileID: 0}
+  portrait: {fileID: 0}
