@@ -13,8 +13,26 @@ public class GeminiAPI : MonoBehaviour
     private string apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
 
     public GameObject portrait; // Referencia al retrato del personaje que "habla"
+
+
     //------------------------------------------------------------------------------------------------------------------------------
 
+    public static GeminiAPI Instance { get; private set; } 
+
+    private void Awake()
+    {
+        // Implementación del Singleton
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); // Opcional para persistencia entre escenas
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+    }
 
 
     //-----------------------------------------Método Principal: SendRequest()------------------------------------------------------
