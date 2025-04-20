@@ -27,7 +27,7 @@ public class GeminiAPI : MonoBehaviour
      Propósito: Inicia la corrutina para enviar la petición a la API.
      Parámetros:
             prompt: Texto enviado por el jugador.
-            personajeText: Última línea del personaje (para contexto).
+            personajeText: Última cosa dicha por del personaje. Se emplea para dar contexto y continuidad a la conversación y que Gemini no conteste de forma aislada.
      */
     //------------------------------------------------------------------------------------------------------------------------------
 
