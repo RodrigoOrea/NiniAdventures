@@ -7,7 +7,6 @@ public class CurriculumEvent : MonoBehaviour
 {
     [Header("Configuración de Diálogo")]
     [TextArea] public string initialMessage;
-    public float displayTime = 3.0f;
     public GameObject portrait;
 
     [Header("Configuración de Input")]
@@ -17,7 +16,7 @@ public class CurriculumEvent : MonoBehaviour
     [Header("Opciones de Conversación")]
     [SerializeField] private bool isReactivatable = true;
     [SerializeField] private float reactivationCooldown = 5f;
-    [SerializeField] private string[] farewellWords = { "adiós", "hasta luego", "nos vemos", "chao", "bye" };
+    [SerializeField] private string[] farewellWords = { "adiós", "adios", "Adiós", "Adios", "hasta luego", "Hasta luego", "nos vemos", "Nos vemos", "chao", "bye" };
 
     private bool hasBeenActivated = false;
     private bool isConversationPaused = false;
@@ -34,15 +33,28 @@ public class CurriculumEvent : MonoBehaviour
 
     private void Update()
     {
-        if (isConversationPaused && Input.GetKeyDown(pauseKey))
+        if (Input.GetKeyDown(pauseKey))
         {
-            ResumeConversation();
+            if (isConversationPaused)
+            {
+                ResumeConversation();
+            }
+            else
+            {
+                // Pausa el juego completo cuando se presiona ESC
+                GameManager.Instance.TogglePauseGame();
+
+                // Si estamos en diálogo, también pausamos la conversación
+                if (inputField.gameObject.activeSelf)
+                {
+                    PauseConversation();
+                }
+            }
         }
     }
 
     private void StartConversation()
     {
-        GameManager.Instance.SetDialogueActive(true);
         inputField.gameObject.SetActive(true);
         inputField.Select();
         inputField.ActivateInputField();
@@ -63,19 +75,14 @@ public class CurriculumEvent : MonoBehaviour
         string cleanInput = userInput.ToLower().Trim();
         lastPlayerMessage = userInput;
 
+        // Verifica palabras de despedida
         foreach (string word in farewellWords)
         {
-            if (cleanInput.Contains(word))
+            if (cleanInput.Contains(word.ToLower()))
             {
                 EndConversation(true);
                 return;
             }
-        }
-
-        if (Input.GetKey(KeyCode.Escape))
-        {
-            PauseConversation();
-            return;
         }
 
         ContinueConversation();
@@ -85,7 +92,6 @@ public class CurriculumEvent : MonoBehaviour
     {
         isConversationPaused = true;
         inputField.gameObject.SetActive(false);
-        GameManager.Instance.SetDialogueActive(false);
         ShowCharacterMessage("(La conversación está en pausa...)");
     }
 
@@ -95,7 +101,6 @@ public class CurriculumEvent : MonoBehaviour
         inputField.gameObject.SetActive(true);
         inputField.Select();
         inputField.ActivateInputField();
-        GameManager.Instance.SetDialogueActive(true);
         ShowCharacterMessage("¿Dónde estábamos...?");
     }
 
@@ -103,6 +108,11 @@ public class CurriculumEvent : MonoBehaviour
     {
         GeminiAPI.Instance.SendRequest(lastPlayerMessage, lastCharacterMessage);
         inputField.text = "";
+    }
+
+    public void OnGeminiResponseReceived(string response)
+    {
+        ShowCharacterMessage(response);
     }
 
     private void EndConversation(bool saveContext)
@@ -114,7 +124,6 @@ public class CurriculumEvent : MonoBehaviour
         }
 
         inputField.gameObject.SetActive(false);
-        GameManager.Instance.SetDialogueActive(false);
         GameManager.Instance.ShowMessage("", 0f, null);
 
         if (isReactivatable)
@@ -126,7 +135,7 @@ public class CurriculumEvent : MonoBehaviour
     private void ShowCharacterMessage(string message)
     {
         lastCharacterMessage = message;
-        GameManager.Instance.ShowMessage(message, displayTime, portrait);
+        GameManager.Instance.ShowMessage(message, float.MaxValue, portrait);
     }
 
     private IEnumerator ReactivateCooldown()

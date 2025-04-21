@@ -89,12 +89,12 @@ public class GameManager : MonoBehaviour
     {
         if (isDialogueActive || isGamePaused)
         {
-            Time.timeScale = 0;
+            //Time.timeScale = 1;
             Cursor.visible = true;
         }
         else
         {
-            Time.timeScale = 1;
+            //Time.timeScale = 1;
             Cursor.visible = false;
         }
     }
@@ -192,4 +192,7 @@ public class GameManager : MonoBehaviour
     {
         enemiesKilled += amount;
     }
+
+
 }
+
