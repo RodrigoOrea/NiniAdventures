@@ -1,63 +1,139 @@
+﻿using System.Collections;
 using UnityEngine;
-using System.Collections;
 
 public class BirdMovement : MonoBehaviour
 {
     public float speed = 2f;
     public float moveDistance = 3f;
-    public float telegraphDuration = 0.5f; // Seconds bird pauses before attacking
+    public float telegraphDuration = 2f; // Pre-attack delay
+    public float attackSpeed = 5f;
+    public float detectionRange = 2f;
+    public float groundPauseDuration = 1f;
+    public Transform player;
 
     private Vector3 startPosition;
+    private Animator animator;
     private SpriteRenderer spriteRenderer;
-    private float previousX;
-    private bool playerDetected = false;
-    private bool isTelegraphing = false;
 
-    private Coroutine telegraphCoroutine;
+    private bool isFlying = true;
+    private bool isAttacking = false;
+    private bool isReturning = false;
+
+    private float previousX;
 
     void Start()
     {
         startPosition = transform.position;
+        animator = GetComponent<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         previousX = transform.position.x;
     }
 
     void Update()
     {
-        if (playerDetected || isTelegraphing) return; // Pause movement when preparing to attack
+        if (isAttacking || isReturning) return;
 
-        float offsetX = Mathf.Sin(Time.time * speed) * moveDistance;
-        Vector3 newPosition = new Vector3(startPosition.x + offsetX, startPosition.y, startPosition.z);
-        transform.position = newPosition;
-
-        if (spriteRenderer != null)
+        if (isFlying)
         {
-            spriteRenderer.flipX = (newPosition.x > previousX);
-        }
+            if (player != null)
+            {
+                float horizontalThreshold = 1.0f;
+                bool isPlayerBelow = player.position.y < transform.position.y;
+                bool isPlayerAligned = Mathf.Abs(player.position.x - transform.position.x) < horizontalThreshold;
+                bool isInRange = Mathf.Abs(player.position.y - transform.position.y) <= detectionRange;
 
-        previousX = newPosition.x;
+                if (isPlayerBelow && isPlayerAligned && isInRange)
+                {
+                    StartCoroutine(PrepareAttack());
+                    return;
+                }
+            }
+
+            // Flying movement (idle)
+            float offsetX = Mathf.Sin(Time.time * speed) * moveDistance;
+            Vector3 newPosition = new Vector3(startPosition.x + offsetX, startPosition.y, startPosition.z);
+            transform.position = newPosition;
+
+            // ✅ Corrected flip direction
+            if (spriteRenderer != null)
+                spriteRenderer.flipX = (newPosition.x > previousX);
+
+            previousX = newPosition.x;
+        }
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    private IEnumerator PrepareAttack()
     {
-        if (other.CompareTag("Player") && !playerDetected)
-        {
-            playerDetected = true;
-            telegraphCoroutine = StartCoroutine(TelegraphAttack());
-        }
-    }
-
-    private IEnumerator TelegraphAttack()
-    {
-        isTelegraphing = true;
-
-        // Wait for a moment before attacking (bird keeps flapping in place)
+        isFlying = false;
         yield return new WaitForSeconds(telegraphDuration);
 
-        // Proceed to Step 3: Attack logic goes here
-        Debug.Log("Attack time! (We'll do this next)");
-
-        isTelegraphing = false;
-        // Optionally: set playerDetected = false here if you want the bird to attack once per detection
+        if (player != null)
+        {
+            Vector2 target = player.position;
+            StartCoroutine(DoAttack(target));
+        }
     }
+
+    private IEnumerator DoAttack(Vector2 target)
+    {
+        isAttacking = true;
+
+        FacePlayer();
+        animator.SetBool("isAttacking", true);
+
+        // Move to player
+        while (Vector2.Distance(transform.position, target) > 0.1f)
+        {
+            transform.position = Vector2.MoveTowards(transform.position, target, attackSpeed * Time.deltaTime);
+            yield return null;
+        }
+
+        // Stay on ground
+        animator.SetBool("isAttacking", false);
+        yield return new WaitForSeconds(groundPauseDuration);
+
+        // Return
+        StartCoroutine(ReturnToStart());
+    }
+
+    private IEnumerator ReturnToStart()
+    {
+        isReturning = true;
+
+        transform.rotation = Quaternion.identity;
+
+        // Flip direction properly again
+        if (spriteRenderer != null)
+            spriteRenderer.flipX = (transform.position.x > previousX);
+
+        while (Vector2.Distance(transform.position, startPosition) > 0.1f)
+        {
+            transform.position = Vector2.MoveTowards(transform.position, startPosition, attackSpeed * Time.deltaTime);
+            yield return null;
+        }
+
+        // Reset everything
+        isReturning = false;
+        isAttacking = false;
+        isFlying = true;
+
+        // Flip logic restored
+        previousX = transform.position.x;
+    }
+
+    private void FacePlayer()
+    {
+        if (player != null)
+        {
+            Vector3 dir = player.position - transform.position;
+            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+
+            transform.rotation = Quaternion.Euler(0f, 0f, angle - 180f);
+
+            // Important! Turn off sprite flipping during rotation-based facing
+            if (spriteRenderer != null)
+                spriteRenderer.flipX = false;
+        }
+    }
+
 }
