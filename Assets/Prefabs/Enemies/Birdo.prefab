@@ -91,6 +91,7 @@ GameObject:
   - component: {fileID: 1673099782427018972}
   - component: {fileID: 3274291961286181182}
   - component: {fileID: 888662828968456978}
+  - component: {fileID: -1432538316911920206}
   m_Layer: 10
   m_Name: Birdo
   m_TagString: Untagged
@@ -206,6 +207,7 @@ MonoBehaviour:
   detectionRange: 15
   groundPauseDuration: 1
   player: {fileID: 0}
+  restoVida: 25
 --- !u!61 &3274291961286181182
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -278,3 +280,16 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &-1432538316911920206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7007161457095286657}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86eee514b2cb75148be17e85935d17f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 100

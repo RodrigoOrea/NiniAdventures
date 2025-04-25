@@ -10,6 +10,7 @@ public class BirdMovement : MonoBehaviour
     public float detectionRange = 2f;
     public float groundPauseDuration = 1f;
     public Transform player;
+    [SerializeField] private int restoVida = 20; 
 
     private Vector3 startPosition;
     private Animator animator;
@@ -88,7 +89,12 @@ public class BirdMovement : MonoBehaviour
             yield return null;
         }
 
-        // Stay on ground
+        // Make sure GameManager exists and restoVida is not zero
+        if (GameManager.Instance != null && restoVida > 0)
+        {
+            GameManager.Instance.RegisterBulletHit(restoVida);
+        }
+
         animator.SetBool("isAttacking", false);
         yield return new WaitForSeconds(groundPauseDuration);
 
