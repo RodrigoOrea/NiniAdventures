@@ -181,7 +181,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\xA1Donde acecha el peligro, aparece Nini!"
+  m_text: Recien echado de casa...
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bde68dda04e16be4c9930839862bb9df, type: 2}
   m_sharedMaterial: {fileID: -1700759295108343937, guid: bde68dda04e16be4c9930839862bb9df, type: 2}
@@ -370,6 +370,50 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -145.74, y: -0.3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &285625449
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 285625451}
+  - component: {fileID: 285625450}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &285625450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 285625449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16d9229154b34d94986e9b63db30f6b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &285625451
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 285625449}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -63.196625, y: 10.585681, z: -0.57351977}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -635,7 +679,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Depende de \xE9l mostrarle al mundo qui\xE9n manda\n"
+  m_text: Pero sin miedo a nada, dispuesto a encontrar trabajo
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bde68dda04e16be4c9930839862bb9df, type: 2}
   m_sharedMaterial: {fileID: -1700759295108343937, guid: bde68dda04e16be4c9930839862bb9df, type: 2}
@@ -3150,7 +3194,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Un rebelde sin causa, hambriento de dolor!
+  m_text: 'Sin saber hacerse la cama
 
 '
   m_isRightToLeft: 0
@@ -23904,3 +23948,4 @@ SceneRoots:
   - {fileID: 707842184}
   - {fileID: 1087628986}
   - {fileID: 1283436492}
+  - {fileID: 285625451}

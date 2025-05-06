@@ -7,7 +7,7 @@ public class MainMenuManager : MonoBehaviour
 {
     public void StartGame() //BOTON PLAY
     {
-        SceneManager.LoadScene("LevelForest-PrimerNivel");  // Cambia "Level1" por tu escena.
+        SceneManager.LoadScene("CutsceneLevel");  // Cambia "Level1" por tu escena.
     }
 
     public void ShowLevelSelector() //BOTON NIVELES
@@ -15,19 +15,19 @@ public class MainMenuManager : MonoBehaviour
         SceneManager.LoadScene("Levels"); 
     }
 
-    public void ShowCredits() //BOTON CRÉDITOS
+    public void ShowCredits() //BOTON CRï¿½DITOS
     {
         SceneManager.LoadScene("Credits");
     }
     
 
-    public void Settings() //BOTÓN AJUSTES 
+    public void Settings() //BOTï¿½N AJUSTES 
     {
         SceneManager.LoadScene("Settings");
 
     }
 
-    public void QuitGame() //BOTÓN SALIR
+    public void QuitGame() //BOTï¿½N SALIR
     {
         #if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;

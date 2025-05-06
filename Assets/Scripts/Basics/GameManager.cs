@@ -36,8 +36,14 @@ public class GameManager : MonoBehaviour
     private bool isDialogueActive = false;
     private bool isGamePaused = false;
 
+
     private void Awake()
     {
+        GameObject musicaDelMenu = GameObject.Find("AudioManager");
+        if (musicaDelMenu != null)
+        {
+            Destroy(musicaDelMenu);
+        }
         if (Instance == null)
         {
             Instance = this;
@@ -148,7 +154,10 @@ public class GameManager : MonoBehaviour
     {
         health -= hit;
         textoHEALTH.text = "HEALTH: " + health;
-        if (health <= 0) RespawnPlayer();
+        if (health <= 0) {
+            RespawnPlayer();
+            IncreaseAmmo(100);
+        }
         IncreaseDamageTaken((int)hit);
     }
 

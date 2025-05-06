@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 286728496286145586, guid: 6a7450849b6e54b4b8ab1e960d55bbd2, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.09
+      objectReference: {fileID: 0}
     - target: {fileID: 659340183668007109, guid: 6a7450849b6e54b4b8ab1e960d55bbd2, type: 3}
       propertyPath: m_LocalPosition.x
       value: -11.94
@@ -54,7 +58,11 @@ PrefabInstance:
       objectReference: {fileID: 5300675565840872747, guid: 668dee0469f6bf841b61d2cda09a2a20, type: 3}
     - target: {fileID: 1335706934660756958, guid: 6a7450849b6e54b4b8ab1e960d55bbd2, type: 3}
       propertyPath: m_Name
-      value: MainCharacter Variant 1
+      value: MainCharacter-Desert
+      objectReference: {fileID: 0}
+    - target: {fileID: 6500858052574022036, guid: 6a7450849b6e54b4b8ab1e960d55bbd2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.349
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

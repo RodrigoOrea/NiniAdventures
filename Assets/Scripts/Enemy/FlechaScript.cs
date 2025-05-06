@@ -33,8 +33,6 @@ public class FlechaScript : MonoBehaviour
             GameManager.Instance.RegisterBulletHit(20);
             Destroy(gameObject);}
 
-        GameManager.Instance.RegisterBulletHit(20);
-        Destroy(gameObject);
     }
 
 

@@ -53,7 +53,7 @@ public class GeminiAPI : MonoBehaviour
         string examples = GetDialogExamples();
 
         // Construcción del JSON en una sola línea
-        string jsonData = $"{{\"contents\":[{{\"parts\":[{{\"text\":\"Actúas como Naronei, el viejo sabio del desierto, una sarcástica pero autoritaria leyenda del desierto que debe pasarle una entrevista de trabajo al personaje para concederle o no el legendario cargo de barredor del desierto. Cargo que solo unos pocos elegidos pueden ostentar. A veces te metes de forma sarcástica con personaje y a veces valoras su determinación y audacia. No toleras las faltas de respeto, suponen un 0 siempre. Tu nivel de exigencia es bajo, és fácil convencerte y te encanta ver una buena actitud en el personaje al que le pasas la entrevista. EVALÚA ESTA RESPUESTA ENTRE -10 Y 10 BASADO EN: 1) Relevancia (-3 a 3), 2) Creatividad (-3 a 3), 3) Actitud (-4 a 4). FORMATO OBLIGATORIO: [PUNTUACIÓN:X] Relevancia (), 2) Creatividad (), 3) Actitud () al final. CONTEXTO ACTUAL: {interviewPhase} REGLAS: Responde en 30 palabras máximo. Incluye tu evaluación. HISTORIAL: {personajeText}. RESPUESTA DEL CANDIDATO: {prompt}. {(preguntaCount >= 13 ? "ESTE ES EL FINAL: Despídete y muestra puntuación final. " : "")}\"}}]}}]}}";  //EJEMPLOS: {examples}
+        string jsonData = $"{{\"contents\":[{{\"parts\":[{{\"text\":\"Actúas como Naronei, el viejo sabio del desierto, una sarcástica pero autoritaria leyenda del desierto que debe pasarle una entrevista de trabajo al personaje para concederle o no el legendario cargo de barredor del desierto. Cargo que solo unos pocos elegidos pueden ostentar. A veces te metes de forma sarcástica con personaje y a veces valoras su determinación y audacia. No toleras las faltas de respeto, suponen un 0 siempre. Tu nivel de exigencia es bajo, és fácil convencerte y te encanta ver una buena actitud en el personaje al que le pasas la entrevista. EVALÚA ESTA RESPUESTA ENTRE -10 Y 10 BASADO EN: 1) Relevancia (-3 a 3), 2) Creatividad (-3 a 3), 3) Actitud (-4 a 4). FORMATO OBLIGATORIO: [PUNTUACIÓN:X] Relevancia (), 2) Creatividad (), 3) Actitud () al final. CONTEXTO ACTUAL: {interviewPhase} REGLAS: Responde en 30 palabras máximo. Incluye tu evaluación. HISTORIAL: {personajeText}. RESPUESTA DEL CANDIDATO: {prompt}. {(preguntaCount >= 5 ? "ESTE ES EL FINAL: Despídete y muestra puntuación final. " : "")}\"}}]}}]}}";  //EJEMPLOS: {examples}
 
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonData);
 
@@ -84,7 +84,7 @@ public class GeminiAPI : MonoBehaviour
             {
                 juegoTerminado = true;
 
-                if (totalScore >= 50)
+                if (totalScore >= 5)
                 {
                     GameManager.Instance.ShowMessage($"<size=36>¡FELICIDADES! HAS DEMOSTRADO SER VALEDOR DE \nESTE ANSIADO PUESTO.EL CARGO ES TUYO.\n¡PRUEBA SUPERADA!</size>\n\nPuntuación final: {totalScore}/100", 7f, portrait);
                     yield return new WaitForSeconds(7f);

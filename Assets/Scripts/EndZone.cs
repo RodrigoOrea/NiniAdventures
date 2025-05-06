@@ -9,7 +9,7 @@ public class EndZone : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            SceneManager.LoadScene(sceneIndexToLoad);
+            SceneManager.LoadScene("LevelDesert-SecondLevel");
         }
     }
 }
