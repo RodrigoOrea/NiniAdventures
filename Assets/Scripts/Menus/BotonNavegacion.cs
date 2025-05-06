@@ -7,7 +7,7 @@ public class BotonNavegacion : MonoBehaviour
 {
     public void CargarPrimerNivel()
     {
-        SceneManager.LoadScene("LevelForest-PrimerNivel");
+        SceneManager.LoadScene("CutsceneLevel");
     }
 
 
