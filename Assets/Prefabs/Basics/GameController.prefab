@@ -42,10 +42,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6136029634920933040}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04ccb8a07902cad42bcc50a206cf37a0, type: 3}
+  m_Script: {fileID: 11500000, guid: 2905c9fa6a027b540a091e5d6789beb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputField: {fileID: 0}
+  responseText: {fileID: 0}
+  portrait: {fileID: 0}
 --- !u!114 &2957050368119517855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58,5 +59,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de08098eac56b684a8b23b3b77ab16ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chatGPT: {fileID: 2454967740191256627}
-  playerInput: {fileID: 0}
+  player: {fileID: 0}
+  initialRespawnPoint: {fileID: 0}
+  textoHEALTH: {fileID: 0}
+  textoAMMO: {fileID: 0}
+  textoGRANADE: {fileID: 0}
+  dialogueText: {fileID: 0}
+  ammo: 50
+  granades: 10
+  "da\xF1oRealizado": 0
+  "da\xF1oRecibido": 0
+  enemiesKilled: 0
